@@ -1,0 +1,6 @@
+{
+  "name": "The Wedding Planner Dashboard",
+  "description": "A comprehensive wedding planning command center featuring dual-mode database support, real-time urgency tracking, dynamic event workspaces, budget management, and interactive task boards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

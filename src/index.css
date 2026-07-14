@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  /* ==========================================================================
+     THEME 1: Auspicious Kumkum & Ivory Silk (Default Mode)
+     Generates a stunning traditional beige/eggshell white palette with deep
+     royal maroon, sandalwood and gold trims.
+     ========================================================================== */
+  --color-slate-50: #fdfaf5;     /* Soft warm cotton white hint */
+  --color-slate-100: #faf3e5;    /* Traditional Silk Saree cream */
+  --color-slate-200: #eedfca;    /* Sandalwood paste beige */
+  --color-slate-300: #dfc29f;    /* Light gold powder bronze */
+  --color-slate-400: #b08c68;    /* Muted gold borders */
+  --color-slate-500: #8c5b33;    /* Sandalwood warm brown */
+  --color-slate-600: #a31d31;    /* Saree border Crimson Crimson */
+  --color-slate-700: #911627;    /* Royal Andhra Kumkum Maroon */
+  --color-slate-800: #7b1421;    /* Traditional Auspicious Deep Maroon */
+  --color-slate-850: #eedfca;    /* Border Sandalwood paste */
+  --color-slate-900: #ffffff;    /* Primary Card Canvas - Brilliant pristine white */
+  --color-slate-950: #fbf8f3;    /* Main App Background - Royal Eggshell silk */
+
+  /* Map Zinc to same warm traditional silk palette for compatibility with standard libraries */
+  --color-zinc-50: #fdfaf5;
+  --color-zinc-100: #faf3e5;
+  --color-zinc-200: #eedfca;
+  --color-zinc-300: #dfc29f;
+  --color-zinc-400: #b08c68;
+  --color-zinc-500: #8c5b33;
+  --color-zinc-600: #a31d31;
+  --color-zinc-700: #911627;
+  --color-zinc-800: #7b1421;
+  --color-zinc-900: #ffffff;
+  --color-zinc-950: #fbf8f3;
+
+  /* Traditional Andhra Royal Green / Mango Leaf Emerald */
+  --color-emerald-50: #f4faf6;
+  --color-emerald-100: #e2f4e9;
+  --color-emerald-200: #c4ead2;
+  --color-emerald-300: #98daaf;
+  --color-emerald-400: #62c384;
+  --color-emerald-500: #3ca962;
+  --color-emerald-600: #2a874b;  /* Auspicious fresh mango leaf */
+  --color-emerald-700: #1b5e34;  /* Rich Royal Green */
+  --color-emerald-800: #144927;  /* Deep temple canopy green */
+  --color-emerald-900: #0f371d;
+
+  /* Custom Crimson Maroon (Kumkum Red) Palette */
+  --color-maroon-50: #fdf2f4;
+  --color-maroon-100: #fbe2e5;
+  --color-maroon-200: #f7cbd1;
+  --color-maroon-300: #efa0aa;
+  --color-maroon-400: #e26b7b;
+  --color-maroon-500: #d03d52;
+  --color-maroon-600: #b32135;
+  --color-maroon-700: #911627;  /* Auspicious Kumkum Crimson */
+  --color-maroon-800: #7b1421;  /* Deep Temple Maroon */
+  --color-maroon-900: #66121d;
+
+  /* Sandalwood / Beige / Ivory Traditional Silk Palette */
+  --color-sandalwood-50: #fffdfa;
+  --color-sandalwood-100: #faf5eb;
+  --color-sandalwood-200: #f5ebe0;
+  --color-sandalwood-300: #ebd8c1;
+  --color-sandalwood-400: #dfc29f;
+  --color-sandalwood-500: #cea375;
+  --color-sandalwood-600: #bd8851;
+  --color-sandalwood-700: #ac723f;
+  --color-sandalwood-800: #8c5b33;
+  --color-sandalwood-900: #6f492b;
+
+  /* Gold / Haldi / Turmeric Accent Palette */
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;  /* Golden Zari Borders */
+  --color-gold-700: #b45309;
+}
+
+.dark {
+  /* ==========================================================================
+     THEME 2: Auspicious Haritha & Haldi (Mapped to "Dark Mode" Class)
+     Transforms the app entirely into a vibrant, warm light sandalwood gold & 
+     auspicious mango leaf green palette. No dark elements allowed!
+     ========================================================================== */
+  --color-slate-50: #fcfcf2;     /* Warm rice water hint */
+  --color-slate-100: #f5f6dc;    /* Haldi/Turmeric paste light */
+  --color-slate-200: #eaf0cb;    /* Raw mango beige */
+  --color-slate-300: #cedd9b;    /* Fresh coconut leaf fiber */
+  --color-slate-400: #1b5e34;    /* Auspicious Mango Leaf Green */
+  --color-slate-500: #1b5e34;    /* Royal Green */
+  --color-slate-600: #2a874b;
+  --color-slate-700: #1b5e34;    /* Deep Royal Green */
+  --color-slate-800: #144927;
+  --color-slate-850: #cedd9b;
+  --color-slate-900: #fffef7;    /* Card backgrounds: Gilded ivory silk */
+  --color-slate-950: #f7f3dd;    /* Main background: Sandalwood paste yellow-beige */
+
+  --color-zinc-50: #fcfcf2;
+  --color-zinc-100: #f5f6dc;
+  --color-zinc-200: #eaf0cb;
+  --color-zinc-300: #cedd9b;
+  --color-zinc-400: #1b5e34;
+  --color-zinc-500: #1b5e34;
+  --color-zinc-600: #2a874b;
+  --color-zinc-700: #1b5e34;
+  --color-zinc-800: #144927;
+  --color-zinc-900: #fffef7;
+  --color-zinc-950: #f7f3dd;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-slate-950);
+  color: #2c2520; /* Soft warm charcoal brown for readable traditional contrast */
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: var(--color-slate-950);
+  color: #172b1a; /* Elegant deep-green tinted warm charcoal */
+}
+
+/* Gold/Maroon shimmer animation */
+@keyframes traditional-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #911627 0%, #d97706 30%, #fef3c7 50%, #d97706 70%, #911627 100%);
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: traditional-shimmer 4s linear infinite;
+}
+
+/* Authentic Andhra Mandapam border and patterns */
+.traditional-border {
+  border: 2px solid;
+  border-image: linear-gradient(to right, #911627, #d97706, #1b5e34) 1;
+}
+
+.gradient-traditional-header {
+  background: linear-gradient(135deg, #7b1421 0%, #911627 50%, #1b5e34 100%);
+}
+
+.gradient-haldi-maroon {
+  background: linear-gradient(135deg, #b45309 0%, #911627 100%);
+}
+
+/* Scrollbar customizations for a premium editorial look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-slate-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-300);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-400);
+}
