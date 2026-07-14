@@ -5,130 +5,296 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, Cambria, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-850: var(--slate-850);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  --color-zinc-50: var(--zinc-50);
+  --color-zinc-100: var(--zinc-100);
+  --color-zinc-200: var(--zinc-200);
+  --color-zinc-300: var(--zinc-300);
+  --color-zinc-400: var(--zinc-400);
+  --color-zinc-500: var(--zinc-500);
+  --color-zinc-600: var(--zinc-600);
+  --color-zinc-700: var(--zinc-700);
+  --color-zinc-800: var(--zinc-800);
+  --color-zinc-900: var(--zinc-900);
+  --color-zinc-950: var(--zinc-950);
+
+  --color-emerald-50: var(--emerald-50);
+  --color-emerald-100: var(--emerald-100);
+  --color-emerald-200: var(--emerald-200);
+  --color-emerald-300: var(--emerald-300);
+  --color-emerald-400: var(--emerald-400);
+  --color-emerald-500: var(--emerald-500);
+  --color-emerald-600: var(--emerald-600);
+  --color-emerald-700: var(--emerald-700);
+  --color-emerald-800: var(--emerald-800);
+  --color-emerald-900: var(--emerald-900);
+
+  --color-maroon-50: var(--maroon-50);
+  --color-maroon-100: var(--maroon-100);
+  --color-maroon-200: var(--maroon-200);
+  --color-maroon-300: var(--maroon-300);
+  --color-maroon-400: var(--maroon-400);
+  --color-maroon-500: var(--maroon-500);
+  --color-maroon-600: var(--maroon-600);
+  --color-maroon-700: var(--maroon-700);
+  --color-maroon-800: var(--maroon-800);
+  --color-maroon-900: var(--maroon-900);
+
+  --color-sandalwood-50: var(--sandalwood-50);
+  --color-sandalwood-100: var(--sandalwood-100);
+  --color-sandalwood-200: var(--sandalwood-200);
+  --color-sandalwood-300: var(--sandalwood-300);
+  --color-sandalwood-400: var(--sandalwood-400);
+  --color-sandalwood-500: var(--sandalwood-500);
+  --color-sandalwood-600: var(--sandalwood-600);
+  --color-sandalwood-700: var(--sandalwood-700);
+  --color-sandalwood-800: var(--sandalwood-800);
+  --color-sandalwood-900: var(--sandalwood-900);
+
+  --color-gold-50: var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
 }
 
 :root {
   /* ==========================================================================
-     THEME 1: Auspicious Kumkum & Ivory Silk (Default Mode)
-     Generates a stunning traditional beige/eggshell white palette with deep
-     royal maroon, sandalwood and gold trims.
+     THEME 1: Auspicious Kumkum & Ivory Silk (Default Light Mode)
+     Generates a gorgeous, high-contrast traditional cream palette with deep
+     auspicious maroon, sandalwood, and gold trims.
      ========================================================================== */
-  --color-slate-50: #fdfaf5;     /* Soft warm cotton white hint */
-  --color-slate-100: #faf3e5;    /* Traditional Silk Saree cream */
-  --color-slate-200: #eedfca;    /* Sandalwood paste beige */
-  --color-slate-300: #dfc29f;    /* Light gold powder bronze */
-  --color-slate-400: #b08c68;    /* Muted gold borders */
-  --color-slate-500: #8c5b33;    /* Sandalwood warm brown */
-  --color-slate-600: #a31d31;    /* Saree border Crimson Crimson */
-  --color-slate-700: #911627;    /* Royal Andhra Kumkum Maroon */
-  --color-slate-800: #7b1421;    /* Traditional Auspicious Deep Maroon */
-  --color-slate-850: #eedfca;    /* Border Sandalwood paste */
-  --color-slate-900: #ffffff;    /* Primary Card Canvas - Brilliant pristine white */
-  --color-slate-950: #fbf8f3;    /* Main App Background - Royal Eggshell silk */
+  --slate-50: #fdfaf5;     /* Soft warm cotton white hint */
+  --slate-100: #faf3e5;    /* Traditional Silk Saree cream */
+  --slate-200: #eedfca;    /* Sandalwood paste beige */
+  --slate-300: #dfc29f;    /* Light gold powder bronze border */
+  --slate-400: #5c4d42;    /* Medium-dark warm brown (VERY READABLE) */
+  --slate-500: #42362d;    /* Charcoal brown (EXCELLENT CONTRAST) */
+  --slate-600: #911627;    /* Auspicious Kumkum Crimson */
+  --slate-700: #7b1421;    /* Traditional Deep Maroon */
+  --slate-800: #1c1917;    /* Warm stone charcoal (100% accessible black-brown) */
+  --slate-850: #eedfca;    /* Border Sandalwood paste */
+  --slate-900: #ffffff;    /* Card background - Pristine solid white */
+  --slate-950: #fbf8f3;    /* Main Background - Royal Eggshell silk */
 
-  /* Map Zinc to same warm traditional silk palette for compatibility with standard libraries */
-  --color-zinc-50: #fdfaf5;
-  --color-zinc-100: #faf3e5;
-  --color-zinc-200: #eedfca;
-  --color-zinc-300: #dfc29f;
-  --color-zinc-400: #b08c68;
-  --color-zinc-500: #8c5b33;
-  --color-zinc-600: #a31d31;
-  --color-zinc-700: #911627;
-  --color-zinc-800: #7b1421;
-  --color-zinc-900: #ffffff;
-  --color-zinc-950: #fbf8f3;
+  --zinc-50: #fdfaf5;
+  --zinc-100: #faf3e5;
+  --zinc-200: #eedfca;
+  --zinc-300: #dfc29f;
+  --zinc-400: #5c4d42;
+  --zinc-500: #42362d;
+  --zinc-600: #911627;
+  --zinc-700: #7b1421;
+  --zinc-800: #1c1917;
+  --zinc-900: #ffffff;
+  --zinc-950: #fbf8f3;
 
   /* Traditional Andhra Royal Green / Mango Leaf Emerald */
-  --color-emerald-50: #f4faf6;
-  --color-emerald-100: #e2f4e9;
-  --color-emerald-200: #c4ead2;
-  --color-emerald-300: #98daaf;
-  --color-emerald-400: #62c384;
-  --color-emerald-500: #3ca962;
-  --color-emerald-600: #2a874b;  /* Auspicious fresh mango leaf */
-  --color-emerald-700: #1b5e34;  /* Rich Royal Green */
-  --color-emerald-800: #144927;  /* Deep temple canopy green */
-  --color-emerald-900: #0f371d;
+  --emerald-50: #f4faf6;
+  --emerald-100: #e2f4e9;
+  --emerald-200: #c4ead2;
+  --emerald-300: #1b5e34;  /* Dark enough for text */
+  --emerald-400: #1b5e34;  /* High contrast */
+  --emerald-500: #1b5e34;
+  --emerald-600: #144927;  /* Auspicious fresh mango leaf */
+  --emerald-700: #0f371d;  /* Rich Royal Green */
+  --emerald-800: #0a2514;  /* Deep temple canopy green */
+  --emerald-900: #05130a;
 
   /* Custom Crimson Maroon (Kumkum Red) Palette */
-  --color-maroon-50: #fdf2f4;
-  --color-maroon-100: #fbe2e5;
-  --color-maroon-200: #f7cbd1;
-  --color-maroon-300: #efa0aa;
-  --color-maroon-400: #e26b7b;
-  --color-maroon-500: #d03d52;
-  --color-maroon-600: #b32135;
-  --color-maroon-700: #911627;  /* Auspicious Kumkum Crimson */
-  --color-maroon-800: #7b1421;  /* Deep Temple Maroon */
-  --color-maroon-900: #66121d;
+  --maroon-50: #fdf2f4;
+  --maroon-100: #fbe2e5;
+  --maroon-200: #f7cbd1;
+  --maroon-300: #a82032;  /* Dark crimson text safe */
+  --maroon-400: #911627;  /* High contrast Kumkum */
+  --maroon-500: #7b1421;
+  --maroon-600: #66121d;
+  --maroon-700: #911627;  /* Auspicious Kumkum Crimson */
+  --maroon-800: #7b1421;  /* Deep Temple Maroon */
+  --maroon-900: #540c15;
 
   /* Sandalwood / Beige / Ivory Traditional Silk Palette */
-  --color-sandalwood-50: #fffdfa;
-  --color-sandalwood-100: #faf5eb;
-  --color-sandalwood-200: #f5ebe0;
-  --color-sandalwood-300: #ebd8c1;
-  --color-sandalwood-400: #dfc29f;
-  --color-sandalwood-500: #cea375;
-  --color-sandalwood-600: #bd8851;
-  --color-sandalwood-700: #ac723f;
-  --color-sandalwood-800: #8c5b33;
-  --color-sandalwood-900: #6f492b;
+  --sandalwood-50: #fffdfa;
+  --sandalwood-100: #faf5eb;
+  --sandalwood-200: #eedfca;
+  --sandalwood-300: #dfc29f;
+  --sandalwood-400: #8c5b33;  /* Solid readable brown */
+  --sandalwood-500: #6f492b;
+  --sandalwood-600: #ac723f;
+  --sandalwood-700: #8c5b33;
+  --sandalwood-800: #6f492b;
+  --sandalwood-900: #4a2c14;
 
   /* Gold / Haldi / Turmeric Accent Palette */
-  --color-gold-50: #fffbeb;
-  --color-gold-100: #fef3c7;
-  --color-gold-200: #fde68a;
-  --color-gold-300: #fcd34d;
-  --color-gold-400: #fbbf24;
-  --color-gold-500: #f59e0b;
-  --color-gold-600: #d97706;  /* Golden Zari Borders */
-  --color-gold-700: #b45309;
+  --gold-50: #fffbeb;
+  --gold-100: #fef3c7;
+  --gold-200: #fde68a;
+  --gold-300: #b45309;  /* Dark text gold fallback */
+  --gold-400: #d97706;  /* High contrast gold */
+  --gold-500: #b45309;
+  --gold-600: #d97706;  /* Golden Zari Borders */
+  --gold-700: #854005;
 }
 
 .dark {
   /* ==========================================================================
      THEME 2: Auspicious Haritha & Haldi (Mapped to "Dark Mode" Class)
      Transforms the app entirely into a vibrant, warm light sandalwood gold & 
-     auspicious mango leaf green palette. No dark elements allowed!
+     auspicious mango leaf green palette. No dark elements allowed! All text
+     remains dark green or charcoal for immaculate accessibility.
      ========================================================================== */
-  --color-slate-50: #fcfcf2;     /* Warm rice water hint */
-  --color-slate-100: #f5f6dc;    /* Haldi/Turmeric paste light */
-  --color-slate-200: #eaf0cb;    /* Raw mango beige */
-  --color-slate-300: #cedd9b;    /* Fresh coconut leaf fiber */
-  --color-slate-400: #1b5e34;    /* Auspicious Mango Leaf Green */
-  --color-slate-500: #1b5e34;    /* Royal Green */
-  --color-slate-600: #2a874b;
-  --color-slate-700: #1b5e34;    /* Deep Royal Green */
-  --color-slate-800: #144927;
-  --color-slate-850: #cedd9b;
-  --color-slate-900: #fffef7;    /* Card backgrounds: Gilded ivory silk */
-  --color-slate-950: #f7f3dd;    /* Main background: Sandalwood paste yellow-beige */
+  --slate-50: #fcfcf2;     /* Warm rice water hint */
+  --slate-100: #f5f6dc;    /* Haldi/Turmeric paste light */
+  --slate-200: #eaf0cb;    /* Raw mango beige border */
+  --slate-300: #cedd9b;    /* Fresh coconut leaf fiber */
+  --slate-400: #245c30;    /* Auspicious mango leaf green (READABLE TEXT) */
+  --slate-500: #1b4524;    /* Rich medium-dark green (HIGH CONTRAST) */
+  --slate-600: #14341b;    /* Deep temple green */
+  --slate-700: #0c2312;    /* Deepest forest green */
+  --slate-800: #061208;    /* Near-black forest charcoal (100% readable text!) */
+  --slate-850: #cedd9b;    /* Border green-yellow */
+  --slate-900: #fffef7;    /* Card background - Gilded ivory silk */
+  --slate-950: #f7f3dd;    /* Main background - Sandalwood paste yellow-beige */
 
-  --color-zinc-50: #fcfcf2;
-  --color-zinc-100: #f5f6dc;
-  --color-zinc-200: #eaf0cb;
-  --color-zinc-300: #cedd9b;
-  --color-zinc-400: #1b5e34;
-  --color-zinc-500: #1b5e34;
-  --color-zinc-600: #2a874b;
-  --color-zinc-700: #1b5e34;
-  --color-zinc-800: #144927;
-  --color-zinc-900: #fffef7;
-  --color-zinc-950: #f7f3dd;
+  --zinc-50: #fcfcf2;
+  --zinc-100: #f5f6dc;
+  --zinc-200: #eaf0cb;
+  --zinc-300: #cedd9b;
+  --zinc-400: #245c30;
+  --zinc-500: #1b4524;
+  --zinc-600: #14341b;
+  --zinc-700: #0c2312;
+  --zinc-800: #061208;
+  --zinc-900: #fffef7;
+  --zinc-950: #f7f3dd;
+
+  --emerald-50: #fcfcf2;
+  --emerald-100: #f5f6dc;
+  --emerald-200: #eaf0cb;
+  --emerald-300: #14341b;
+  --emerald-400: #14341b;
+  --emerald-500: #1b4524;
+  --emerald-600: #14341b;
+  --emerald-700: #0c2312;
+  --emerald-800: #061208;
+  --emerald-900: #030804;
+
+  --maroon-50: #fcfcf2;
+  --maroon-100: #f5f6dc;
+  --maroon-200: #cedd9b;
+  --maroon-300: #14341b;
+  --maroon-400: #1b4524;
+  --maroon-500: #14341b;
+  --maroon-600: #0c2312;
+  --maroon-700: #14341b;
+  --maroon-800: #0c2312;
+  --maroon-900: #061208;
+
+  --sandalwood-50: #fffef7;
+  --sandalwood-100: #fdfaf5;
+  --sandalwood-200: #f5f6dc;
+  --sandalwood-300: #ebd8c1;
+  --sandalwood-400: #80560b;
+  --sandalwood-500: #593c07;
+  --sandalwood-600: #a6700f;
+  --sandalwood-700: #80560b;
+  --sandalwood-800: #593c07;
+  --sandalwood-900: #332204;
+
+  --gold-50: #fcfcf2;
+  --gold-100: #f5f6dc;
+  --gold-200: #cedd9b;
+  --gold-300: #80560b;
+  --gold-400: #80560b;
+  --gold-500: #80560b;
+  --gold-600: #cca014;
+  --gold-700: #593c07;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-slate-950);
-  color: #2c2520; /* Soft warm charcoal brown for readable traditional contrast */
+  color: #1c1917; /* Solid warm dark stone charcoal for excellent readable contrast */
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dark body {
   background-color: var(--color-slate-950);
-  color: #172b1a; /* Elegant deep-green tinted warm charcoal */
+  color: #061208; /* Pristine high-contrast deep forest green charcoal */
+}
+
+/* ==========================================================================
+   FORCE ACCESSIBILITY CONTRAST FOR LIGHT TEXT CLASSES IN BOTH THEMES
+   ========================================================================= */
+.text-slate-50, .text-slate-100, .text-slate-200, .text-slate-300 {
+  color: #1c1917; /* Fallback to extremely readable charcoal on light backgrounds */
+}
+
+/* Ensure standard and escaped Tailwind dark utility classes are also properly mapped to high-contrast colors in the sandalwood-haldi mode */
+.dark .dark\:text-white {
+  color: #061208 !important; /* Force readable forest charcoal for dark:text-white headings */
+}
+.dark .text-slate-50, .dark .text-zinc-50, .dark .dark\:text-slate-50, .dark .dark\:text-zinc-50 {
+  color: #0c2312 !important;
+}
+.dark .text-slate-100, .dark .text-zinc-100, .dark .dark\:text-slate-100, .dark .dark\:text-zinc-100 {
+  color: #0c2312 !important;
+}
+.dark .text-slate-200, .dark .text-zinc-200, .dark .dark\:text-slate-200, .dark .dark\:text-zinc-200 {
+  color: #14341b !important;
+}
+.dark .text-slate-300, .dark .text-zinc-300, .dark .dark\:text-slate-300, .dark .dark\:text-zinc-300 {
+  color: #14341b !important;
+}
+.dark .text-slate-400, .dark .text-zinc-400, .dark .dark\:text-slate-400, .dark .dark\:text-zinc-400 {
+  color: #1b4524 !important;
+}
+.dark .text-slate-500, .dark .text-zinc-500, .dark .dark\:text-slate-500, .dark .dark\:text-zinc-500 {
+  color: #1b4524 !important;
+}
+.dark .text-maroon-450, .dark .text-maroon-400, .dark .text-maroon-300,
+.dark .dark\:text-maroon-450, .dark .dark\:text-maroon-400, .dark .dark\:text-maroon-300 {
+  color: #14341b !important;
+}
+.dark .text-sandalwood-400, .dark .text-sandalwood-300,
+.dark .dark\:text-sandalwood-400, .dark .dark\:text-sandalwood-300 {
+  color: #593c07 !important;
+}
+.dark .text-emerald-400, .dark .text-emerald-300,
+.dark .dark\:text-emerald-400, .dark .dark\:text-emerald-300 {
+  color: #0c2312 !important;
+}
+
+/* Ensure active nav buttons and badges with dark backgrounds are perfectly readable with white/ivory text */
+.bg-maroon-700 text-white, .bg-maroon-700 .text-white, .bg-emerald-700 text-white, .bg-emerald-700 .text-white {
+  color: #ffffff !important;
+}
+.bg-maroon-800 text-white, .bg-maroon-800 .text-white, .bg-emerald-800 text-white, .bg-emerald-800 .text-white {
+  color: #ffffff !important;
+}
+
+.dark .bg-maroon-700, .dark .bg-emerald-700, .dark .bg-emerald-800, .dark .bg-maroon-800 {
+  color: #fffef7 !important;
+}
+.dark .bg-maroon-700 *, .dark .bg-emerald-700 *, .dark .bg-emerald-800 *, .dark .bg-maroon-800 * {
+  color: #fffef7 !important;
 }
 
 /* Gold/Maroon shimmer animation */
@@ -138,7 +304,7 @@ body {
 }
 
 .shimmer-text {
-  background: linear-gradient(90deg, #911627 0%, #d97706 30%, #fef3c7 50%, #d97706 70%, #911627 100%);
+  background: linear-gradient(90deg, #911627 0%, #d97706 30%, #42362d 50%, #d97706 70%, #911627 100%);
   background-size: 200% auto;
   color: transparent;
   background-clip: text;

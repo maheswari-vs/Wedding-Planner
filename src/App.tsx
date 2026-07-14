@@ -174,7 +174,7 @@ export default function App() {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-maroon-700 fill-maroon-600/10" />
-            <span className="font-serif font-bold text-sm text-slate-800 dark:text-white">Andhra Kalyanam Planner</span>
+            <span className="font-serif font-bold text-sm text-slate-800">Andhra Kalyanam Planner</span>
           </div>
           
           {/* Quick theme + user indicator */}
@@ -337,7 +337,7 @@ export default function App() {
                   {/* High Priority Deadlines list */}
                   <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-5 shadow-xs space-y-4">
                     <div className="flex justify-between items-center border-b border-slate-50 dark:border-slate-850 pb-2.5">
-                      <h3 className="font-serif font-bold text-base text-slate-800 dark:text-white">Critical Deadlines Today</h3>
+                      <h3 className="font-serif font-bold text-base text-slate-800">Critical Deadlines Today</h3>
                       <button 
                         onClick={() => setActiveTab('Tasks')}
                         className="text-xs text-emerald-700 dark:text-emerald-400 font-bold hover:underline cursor-pointer"
@@ -379,7 +379,7 @@ export default function App() {
                   {/* Audit activity log list */}
                   <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-5 shadow-xs space-y-4">
                     <div className="flex justify-between items-center border-b border-slate-50 dark:border-slate-850 pb-2.5">
-                      <h3 className="font-serif font-bold text-base text-slate-800 dark:text-white">Recent Activities Log</h3>
+                      <h3 className="font-serif font-bold text-base text-slate-800">Recent Activities Log</h3>
                       <span className="text-[10px] uppercase font-mono font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
                         Realtime Sync Logs
                       </span>
@@ -430,7 +430,7 @@ export default function App() {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="font-serif font-bold text-2xl text-slate-800 dark:text-white">Unified Task Matrix</h2>
+                  <h2 className="font-serif font-bold text-2xl text-slate-800">Unified Task Matrix</h2>
                   <p className="text-xs text-slate-400">Complete listing of wedding checklists with customizable filters and drag status updates.</p>
                 </div>
 
@@ -471,7 +471,7 @@ export default function App() {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="font-serif font-bold text-2xl text-slate-800 dark:text-white">Financial Dashboard</h2>
+                  <h2 className="font-serif font-bold text-2xl text-slate-800">Financial Dashboard</h2>
                   <p className="text-xs text-slate-400">Analytical charts representing budget caps, deposits paid, and remaining dues.</p>
                 </div>
 
@@ -494,7 +494,7 @@ export default function App() {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="font-serif font-bold text-2xl text-slate-800 dark:text-white">Guests & Shopping Hub</h2>
+                  <h2 className="font-serif font-bold text-2xl text-slate-800">Guests & Shopping Hub</h2>
                   <p className="text-xs text-slate-400">Database controllers for family RSVP lists, invitation delivery trackers, and jewelry budgets.</p>
                 </div>
 
@@ -518,7 +518,7 @@ export default function App() {
                 className="space-y-6"
               >
                 <div>
-                  <h2 className="font-serif font-bold text-2xl text-slate-800 dark:text-white">Workspace Configuration Console</h2>
+                  <h2 className="font-serif font-bold text-2xl text-slate-800">Workspace Configuration Console</h2>
                   <p className="text-xs text-slate-400">Developer sandbox testing blocks, user RBAC hot-swapping profiles, and cloud syncer logs.</p>
                 </div>
 
