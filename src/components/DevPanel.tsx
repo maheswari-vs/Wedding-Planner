@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { UserProfile, WeddingEvent, Budget, EventColorTheme } from '../types';
-import { db, isSupabaseConfigured, addNotification } from '../lib/db';
+import { db, isSupabaseConfigured, addNotification, syncFromSupabase, pushToSupabase } from '../lib/db';
 import { 
   Database, UserCheck, Sparkles, Send, Trash2, 
   Users, Calendar, DollarSign, Plus, Check, Edit3, X, Archive
@@ -19,6 +19,123 @@ type PanelTab = 'users' | 'events' | 'budgets' | 'utilities';
 
 export const DevPanel: React.FC<DevPanelProps> = ({ currentUser, onUserChanged, onDatabaseReset }) => {
   const [activeTab, setActiveTab] = useState<PanelTab>('users');
+  const [syncing, setSyncing] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handlePullFromSupabase = async () => {
+    setSyncing(true);
+    const res = await syncFromSupabase();
+    setSyncing(false);
+    if (res.success) {
+      onDatabaseReset(); // reload in App.tsx
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handlePushToSupabase = async () => {
+    setSyncing(true);
+    const res = await pushToSupabase();
+    setSyncing(false);
+    if (!res.success) {
+      alert(res.message);
+    }
+  };
+
+  const sqlSchemaSnippet = `-- SQL Seed Schema for Andhra Kalyanam Wedding Planner
+-- Copy and run this in your Supabase SQL Editor to provision all tables.
+
+-- 1. Profiles Table
+CREATE TABLE IF NOT EXISTS wedding_profiles (
+  id TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  full_name TEXT NOT NULL,
+  role TEXT NOT NULL
+);
+
+-- 2. Events Table
+CREATE TABLE IF NOT EXISTS wedding_events (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  event_date TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL,
+  color_theme TEXT NOT NULL,
+  is_custom BOOLEAN DEFAULT false
+);
+
+-- 3. Tasks Table
+CREATE TABLE IF NOT EXISTS wedding_tasks (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT,
+  category TEXT,
+  event_id TEXT REFERENCES wedding_events(id) ON DELETE SET NULL,
+  assigned_to TEXT,
+  priority TEXT NOT NULL,
+  due_date TEXT NOT NULL,
+  status TEXT NOT NULL
+);
+
+-- 4. Vendors Table
+CREATE TABLE IF NOT EXISTS wedding_vendors (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  booking_status TEXT NOT NULL,
+  advance_paid NUMERIC DEFAULT 0,
+  balance_due NUMERIC DEFAULT 0,
+  contract_signed BOOLEAN DEFAULT false,
+  trial_fitting_date TEXT,
+  contact_phone TEXT
+);
+
+-- 5. Budgets Table
+CREATE TABLE IF NOT EXISTS wedding_budgets (
+  id TEXT PRIMARY KEY,
+  event_id TEXT REFERENCES wedding_events(id) ON DELETE CASCADE,
+  category TEXT NOT NULL,
+  allocated NUMERIC DEFAULT 0,
+  actual NUMERIC DEFAULT 0,
+  paid NUMERIC DEFAULT 0,
+  notes TEXT
+);
+
+-- 6. Guests Table
+CREATE TABLE IF NOT EXISTS wedding_guests (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  rsvp_status TEXT NOT NULL,
+  side TEXT NOT NULL,
+  food_preference TEXT NOT NULL,
+  invitation_sent BOOLEAN DEFAULT false,
+  phone TEXT,
+  group_tag TEXT
+);
+
+-- 7. Shopping Table
+CREATE TABLE IF NOT EXISTS wedding_shopping (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  estimated_budget NUMERIC DEFAULT 0,
+  actual_price NUMERIC DEFAULT 0,
+  purchased BOOLEAN DEFAULT false,
+  notes TEXT
+);
+
+-- Insert initial admin profiles
+INSERT INTO wedding_profiles (id, email, full_name, role) VALUES
+('user1', 'vmaheswarisreenivasa@gmail.com', 'Maheswari Sreenivasa', 'Admin'),
+('user2', 'zahra.ali@gmail.com', 'Zahra Ali (Coordinator)', 'Family/Volunteer'),
+('user3', 'imran.malik@gmail.com', 'Imran Malik (Brother)', 'Family/Volunteer')
+ON CONFLICT (id) DO NOTHING;`;
+
+  const handleCopySQL = () => {
+    navigator.clipboard.writeText(sqlSchemaSnippet);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   
   // Local state lists for editing
   const users = db.getAllUsers();
@@ -788,26 +905,76 @@ export const DevPanel: React.FC<DevPanelProps> = ({ currentUser, onUserChanged, 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Persistence Telemetry */}
-          <div className="space-y-4">
+          <div className="space-y-4 col-span-1 md:col-span-2">
             <h4 className="font-serif font-bold text-sm text-maroon-800 dark:text-maroon-400 flex items-center gap-1.5">
-              <span>Persistence & Connection</span>
+              <span>Database Sync Control Console</span>
             </h4>
-            <div className="p-4 rounded-2xl border border-dashed border-sandalwood-300 dark:border-slate-800 space-y-3 bg-sandalwood-50/20">
-              <div className="flex justify-between items-center text-[11px]">
-                <span className="text-slate-400 font-bold uppercase">DB Layer Status:</span>
-                {isSupabaseConfigured ? (
-                  <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-150 inline-flex items-center gap-0.5">
-                    ● Supabase Enabled
-                  </span>
-                ) : (
-                  <span className="text-maroon-700 font-bold bg-maroon-50 px-2 py-0.5 rounded border border-maroon-150 inline-flex items-center gap-0.5">
-                    ● Local Sandbox (Sync Active)
-                  </span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-1 p-5 rounded-2xl border border-dashed border-sandalwood-300 dark:border-slate-800 space-y-4 bg-sandalwood-50/20">
+                <div className="flex justify-between items-center text-[11px]">
+                  <span className="text-slate-400 font-bold uppercase">DB Layer Status:</span>
+                  {isSupabaseConfigured ? (
+                    <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-150 inline-flex items-center gap-0.5">
+                      ● Supabase Connected
+                    </span>
+                  ) : (
+                    <span className="text-maroon-700 font-bold bg-maroon-50 px-2 py-0.5 rounded border border-maroon-150 inline-flex items-center gap-0.5">
+                      ● Local Storage Mode
+                    </span>
+                  )}
+                </div>
+                
+                <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+                  {isSupabaseConfigured ? (
+                    "Your application is configured with live Supabase environment keys. When you save or edit budgets, timelines, guests, or tasks, changes are written locally and backed up instantly to Supabase in the background."
+                  ) : (
+                    "Andhra wedding parameters are currently persisted locally. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment variables to activate secure cloud synchronizations."
+                  )}
+                </p>
+
+                {isSupabaseConfigured && (
+                  <div className="space-y-2 pt-2">
+                    <button
+                      onClick={handlePullFromSupabase}
+                      disabled={syncing}
+                      className="w-full bg-emerald-700 hover:bg-emerald-800 disabled:bg-emerald-700/50 text-white text-xs font-bold py-2 px-3 rounded-xl cursor-pointer flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <Database className="w-3.5 h-3.5" /> 
+                      {syncing ? "Syncing..." : "Pull from Supabase"}
+                    </button>
+                    <button
+                      onClick={handlePushToSupabase}
+                      disabled={syncing}
+                      className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-900/50 text-white text-xs font-bold py-2 px-3 rounded-xl cursor-pointer flex items-center justify-center gap-1.5 transition-colors border border-slate-750"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      {syncing ? "Syncing..." : "Push Local to Supabase"}
+                    </button>
+                  </div>
                 )}
               </div>
-              <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
-                You are securely testing Andhra traditional wedding parameters in LocalStorage Mode. Feel free to add and customize timelines, budgets, and users. All changes persist instantly inside your browser local engine.
-              </p>
+
+              {/* SQL setup instructions */}
+              <div className="md:col-span-2 p-5 rounded-2xl border border-sandalwood-100 dark:border-slate-800 space-y-3 bg-white dark:bg-slate-950">
+                <div className="flex justify-between items-center">
+                  <h5 className="text-xs font-bold uppercase text-slate-400">Supabase Table Schema Setup</h5>
+                  <button 
+                    onClick={handleCopySQL}
+                    className="text-[11px] bg-sandalwood-50/50 hover:bg-sandalwood-100 dark:bg-slate-900 dark:hover:bg-slate-850 text-maroon-800 dark:text-maroon-400 font-bold px-3 py-1.5 rounded-lg border border-sandalwood-200/50 dark:border-slate-800 flex items-center gap-1 cursor-pointer transition-colors"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Sparkles className="w-3.5 h-3.5 text-amber-500" />}
+                    {copied ? "Copied!" : "Copy SQL Script"}
+                  </button>
+                </div>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Run this SQL in your Supabase SQL Editor console to create the 7 database tables required for the Andhra Kalyanam Planner workspace.
+                </p>
+                <div className="relative">
+                  <pre className="text-[10px] bg-slate-50 dark:bg-slate-900 p-3 rounded-xl font-mono text-slate-600 dark:text-slate-300 max-h-40 overflow-y-auto border border-slate-100 dark:border-slate-850">
+                    {sqlSchemaSnippet}
+                  </pre>
+                </div>
+              </div>
             </div>
           </div>
 

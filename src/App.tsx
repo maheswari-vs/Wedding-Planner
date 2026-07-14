@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { db } from './lib/db';
+import { db, isSupabaseConfigured, syncFromSupabase } from './lib/db';
 import { 
   UserProfile, WeddingEvent, Task, Vendor, Budget, Guest, ShoppingItem, Notification 
 } from './types';
@@ -60,6 +60,15 @@ export default function App() {
   useEffect(() => {
     // Standard data initialization
     refreshData();
+
+    // Initial silent sync from Supabase if configured
+    if (isSupabaseConfigured) {
+      syncFromSupabase().then(res => {
+        if (res.success) {
+          refreshData();
+        }
+      });
+    }
 
     // Listen to custom local storage real-time updates
     const handleRealtimeUpdate = (e: Event) => {

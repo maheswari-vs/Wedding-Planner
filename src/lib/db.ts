@@ -472,6 +472,128 @@ export const addNotification = (message: string, type: 'info' | 'success' | 'war
 };
 
 // -------------------------------------------------------------
+// SUPABASE REALTIME PERSISTENCE HANDLERS & INITIALIZERS
+// -------------------------------------------------------------
+const backgroundUpsert = async (table: string, data: any) => {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { error } = await supabase.from(table).upsert(data);
+      if (error) {
+        console.error(`Background upsert fail on ${table}:`, error);
+      }
+    } catch (err) {
+      console.error(`Background upsert fail on ${table}:`, err);
+    }
+  }
+};
+
+const backgroundDelete = async (table: string, id: string) => {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { error } = await supabase.from(table).delete().eq('id', id);
+      if (error) {
+        console.error(`Background delete fail on ${table}:`, error);
+      }
+    } catch (err) {
+      console.error(`Background delete fail on ${table}:`, err);
+    }
+  }
+};
+
+export const syncFromSupabase = async (): Promise<{ success: boolean; message: string }> => {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, message: "Supabase is not configured yet." };
+  }
+
+  try {
+    const [
+      eventsRes,
+      tasksRes,
+      vendorsRes,
+      budgetsRes,
+      guestsRes,
+      shoppingRes,
+      profilesRes
+    ] = await Promise.all([
+      supabase.from('wedding_events').select('*'),
+      supabase.from('wedding_tasks').select('*'),
+      supabase.from('wedding_vendors').select('*'),
+      supabase.from('wedding_budgets').select('*'),
+      supabase.from('wedding_guests').select('*'),
+      supabase.from('wedding_shopping').select('*'),
+      supabase.from('wedding_profiles').select('*')
+    ]);
+
+    const errors = [];
+    if (eventsRes.error) errors.push(`wedding_events: ${eventsRes.error.message}`);
+    if (tasksRes.error) errors.push(`wedding_tasks: ${tasksRes.error.message}`);
+    if (vendorsRes.error) errors.push(`wedding_vendors: ${vendorsRes.error.message}`);
+    if (budgetsRes.error) errors.push(`wedding_budgets: ${budgetsRes.error.message}`);
+    if (guestsRes.error) errors.push(`wedding_guests: ${guestsRes.error.message}`);
+    if (shoppingRes.error) errors.push(`wedding_shopping: ${shoppingRes.error.message}`);
+    if (profilesRes.error) errors.push(`wedding_profiles: ${profilesRes.error.message}`);
+
+    if (errors.length > 0) {
+      return { 
+        success: false, 
+        message: `Fetch completed with missing tables or errors. Did you run the SQL schema in your Supabase SQL Editor? Details: ${errors.join(' | ')}` 
+      };
+    }
+
+    if (eventsRes.data && eventsRes.data.length > 0) setLocal('wedding_events', eventsRes.data);
+    if (tasksRes.data && tasksRes.data.length > 0) setLocal('wedding_tasks', tasksRes.data);
+    if (vendorsRes.data && vendorsRes.data.length > 0) setLocal('wedding_vendors', vendorsRes.data);
+    if (budgetsRes.data && budgetsRes.data.length > 0) setLocal('wedding_budgets', budgetsRes.data);
+    if (guestsRes.data && guestsRes.data.length > 0) setLocal('wedding_guests', guestsRes.data);
+    if (shoppingRes.data && shoppingRes.data.length > 0) setLocal('wedding_shopping', shoppingRes.data);
+    if (profilesRes.data && profilesRes.data.length > 0) setLocal('wedding_profiles', profilesRes.data);
+
+    addNotification("Synchronized with your live Supabase Cloud Database!", "success");
+    return { success: true, message: "Successfully pulled all tables from Supabase!" };
+  } catch (err: any) {
+    console.error("Failed to sync from Supabase:", err);
+    return { success: false, message: `Failed to fetch: ${err.message || err}` };
+  }
+};
+
+export const pushToSupabase = async (): Promise<{ success: boolean; message: string }> => {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, message: "Supabase is not configured yet." };
+  }
+
+  try {
+    const events = db.getEvents();
+    const tasks = db.getTasks();
+    const vendors = db.getVendors();
+    const budgets = db.getBudgets();
+    const guests = db.getGuests();
+    const shopping = db.getShoppingItems();
+    const profiles = db.getAllUsers();
+
+    const results = await Promise.all([
+      events.length > 0 ? supabase.from('wedding_events').upsert(events) : Promise.resolve({ error: null }),
+      tasks.length > 0 ? supabase.from('wedding_tasks').upsert(tasks) : Promise.resolve({ error: null }),
+      vendors.length > 0 ? supabase.from('wedding_vendors').upsert(vendors) : Promise.resolve({ error: null }),
+      budgets.length > 0 ? supabase.from('wedding_budgets').upsert(budgets) : Promise.resolve({ error: null }),
+      guests.length > 0 ? supabase.from('wedding_guests').upsert(guests) : Promise.resolve({ error: null }),
+      shopping.length > 0 ? supabase.from('wedding_shopping').upsert(shopping) : Promise.resolve({ error: null }),
+      profiles.length > 0 ? supabase.from('wedding_profiles').upsert(profiles) : Promise.resolve({ error: null })
+    ]);
+
+    const errors = results.map((r, idx) => r.error ? `Table index ${idx}: ${r.error.message}` : null).filter(Boolean);
+    if (errors.length > 0) {
+      return { success: false, message: `Some tables failed to push. Verify if you created the table structures. Error: ${errors.join(', ')}` };
+    }
+
+    addNotification("Pushed all local workspace seeds to Supabase Database!", "success");
+    return { success: true, message: "All local database tables pushed to Supabase!" };
+  } catch (err: any) {
+    console.error("Failed to push to Supabase:", err);
+    return { success: false, message: `Failed to push: ${err.message || err}` };
+  }
+};
+
+// -------------------------------------------------------------
 // MAIN DB INTERFACE (REACTIVE MOCK ENGINE + OPTIONAL SUPABASE PROXY)
 // -------------------------------------------------------------
 export const db = {
@@ -502,6 +624,9 @@ export const db = {
     }
     setLocal('wedding_profiles', updated);
     
+    // Background sync
+    backgroundUpsert('wedding_profiles', profile);
+
     // Update currently logged-in user if they are the one edited
     const current = db.getCurrentUser();
     if (current.id === profile.id) {
@@ -523,6 +648,9 @@ export const db = {
     const updated = list.filter(u => u.id !== id);
     setLocal('wedding_profiles', updated);
     addNotification(`Deleted user profile: "${target.full_name}"`, 'warning');
+
+    // Background sync
+    backgroundDelete('wedding_profiles', id);
   },
 
   // 1. EVENTS WORKSPACE
@@ -542,22 +670,31 @@ export const db = {
       addNotification(`New workspace created for "${event.name}"!`, 'success');
     }
     setLocal('wedding_events', updated);
+
+    // Background sync
+    backgroundUpsert('wedding_events', event);
   },
 
   archiveEvent: (id: string) => {
     const list = db.getEvents();
     const updated = list.map(e => e.id === id ? { ...e, status: 'Archived' as const } : e);
-    const ev = list.find(e => e.id === id);
+    const ev = updated.find(e => e.id === id);
     setLocal('wedding_events', updated);
     addNotification(`Archived workspace for ${ev?.name || 'event'}.`, 'warning');
+
+    // Background sync
+    if (ev) backgroundUpsert('wedding_events', ev);
   },
 
   unarchiveEvent: (id: string) => {
     const list = db.getEvents();
     const updated = list.map(e => e.id === id ? { ...e, status: 'Active' as const } : e);
-    const ev = list.find(e => e.id === id);
+    const ev = updated.find(e => e.id === id);
     setLocal('wedding_events', updated);
     addNotification(`Activated workspace for ${ev?.name || 'event'}.`, 'success');
+
+    // Background sync
+    if (ev) backgroundUpsert('wedding_events', ev);
   },
 
   // 2. TASKS WORKSPACE
@@ -581,6 +718,9 @@ export const db = {
       addNotification(`Created new task: "${task.name}"`, 'success');
     }
     setLocal('wedding_tasks', updated);
+
+    // Background sync
+    backgroundUpsert('wedding_tasks', task);
   },
 
   deleteTask: (id: string) => {
@@ -589,6 +729,9 @@ export const db = {
     const updated = list.filter(t => t.id !== id);
     setLocal('wedding_tasks', updated);
     addNotification(`Deleted task: "${item?.name || 'Task'}"`, 'warning');
+
+    // Background sync
+    backgroundDelete('wedding_tasks', id);
   },
 
   bulkUpdateTaskStatus: (ids: string[], status: TaskStatus) => {
@@ -596,6 +739,16 @@ export const db = {
     const updated = list.map(t => ids.includes(t.id) ? { ...t, status } : t);
     setLocal('wedding_tasks', updated);
     addNotification(`Bulk updated ${ids.length} tasks to "${status}"`, 'success');
+
+    // Background sync
+    if (isSupabaseConfigured && supabase) {
+      const updatedTasks = updated.filter(t => ids.includes(t.id));
+      if (updatedTasks.length > 0) {
+        supabase.from('wedding_tasks').upsert(updatedTasks).then(({ error }) => {
+          if (error) console.error("Bulk status sync error:", error);
+        });
+      }
+    }
   },
 
   duplicateTask: (id: string) => {
@@ -610,6 +763,9 @@ export const db = {
       };
       setLocal('wedding_tasks', [duplicate, ...list]);
       addNotification(`Duplicated task "${target.name}"`, 'info');
+
+      // Background sync
+      backgroundUpsert('wedding_tasks', duplicate);
     }
   },
 
@@ -630,6 +786,9 @@ export const db = {
       addNotification(`Registered new vendor: ${vendor.name} (${vendor.category})`, 'success');
     }
     setLocal('wedding_vendors', updated);
+
+    // Background sync
+    backgroundUpsert('wedding_vendors', vendor);
   },
 
   deleteVendor: (id: string) => {
@@ -638,6 +797,9 @@ export const db = {
     const updated = list.filter(v => v.id !== id);
     setLocal('wedding_vendors', updated);
     addNotification(`Removed vendor: "${item?.name || 'Vendor'}"`, 'warning');
+
+    // Background sync
+    backgroundDelete('wedding_vendors', id);
   },
 
   // 4. BUDGETS & FINANCIALS
@@ -656,12 +818,18 @@ export const db = {
     }
     setLocal('wedding_budgets', updated);
     addNotification(`Updated budget allocation for category: ${budget.category}`, 'info');
+
+    // Background sync
+    backgroundUpsert('wedding_budgets', budget);
   },
 
   deleteBudget: (id: string) => {
     const list = db.getBudgets();
     const updated = list.filter(b => b.id !== id);
     setLocal('wedding_budgets', updated);
+
+    // Background sync
+    backgroundDelete('wedding_budgets', id);
   },
 
   // 5. GUESTS LIST
@@ -680,6 +848,9 @@ export const db = {
       addNotification(`Added guest "${guest.name}" to the list`, 'success');
     }
     setLocal('wedding_guests', updated);
+
+    // Background sync
+    backgroundUpsert('wedding_guests', guest);
   },
 
   deleteGuest: (id: string) => {
@@ -688,6 +859,9 @@ export const db = {
     const updated = list.filter(g => g.id !== id);
     setLocal('wedding_guests', updated);
     addNotification(`Removed guest: "${item?.name || 'Guest'}"`, 'warning');
+
+    // Background sync
+    backgroundDelete('wedding_guests', id);
   },
 
   // 6. SHOPPING LIST
@@ -706,6 +880,9 @@ export const db = {
       addNotification(`Added shopping item "${item.name}"`, 'success');
     }
     setLocal('wedding_shopping', updated);
+
+    // Background sync
+    backgroundUpsert('wedding_shopping', item);
   },
 
   deleteShoppingItem: (id: string) => {
@@ -714,6 +891,9 @@ export const db = {
     const updated = list.filter(s => s.id !== id);
     setLocal('wedding_shopping', updated);
     addNotification(`Removed shopping item: "${item?.name || 'Item'}"`, 'warning');
+
+    // Background sync
+    backgroundDelete('wedding_shopping', id);
   },
 
   // 7. NOTIFICATIONS
