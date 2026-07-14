@@ -128,7 +128,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fbf8f3] dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex flex-col md:flex-row bg-slate-950 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
       
       {/* 1. DESKTOP SIDEBAR PANEL */}
       <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-850 p-6 space-y-6 flex-shrink-0">
@@ -155,7 +155,7 @@ export default function App() {
                 onClick={() => setActiveTab(item.id)}
                 className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-maroon-700 text-white font-bold shadow-xs'
+                    ? 'bg-emerald-700 text-white font-bold shadow-xs'
                     : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-slate-100'
                 }`}
               >
@@ -209,7 +209,7 @@ export default function App() {
                 onClick={() => setActiveTab(item.id)}
                 className={`whitespace-nowrap px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-maroon-700 text-white shadow-xs'
+                    ? 'bg-emerald-700 text-white shadow-xs'
                     : 'bg-slate-50 dark:bg-slate-950 text-slate-500 border border-slate-100 dark:border-slate-850'
                 }`}
               >
